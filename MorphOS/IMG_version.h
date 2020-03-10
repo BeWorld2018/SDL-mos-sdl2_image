@@ -1,6 +1,6 @@
 #define	VERSION	52
-#define	REVISION	0
-#define	DATE	"6.12.2014"
-#define	VERS	"sdl2_image.library 52.0"
-#define	VSTRING	"sdl2_image.library 52.0 (6.12.2014) © Ilkka Lehtoranta\r\n"
-#define	VERSTAG	"\0$VER: sdl2_image.library 52.0 (6.12.2014) © Ilkka Lehtoranta"
+#define	REVISION	1
+#define	DATE	"10.03.2020"
+#define	VERS	"sdl2_image.library 52.1"
+#define	VSTRING	"sdl2_image.library 52.1 (10.03.2020) © Ilkka Lehtoranta, Bruno Peloille\r\n"
+#define	VERSTAG	"\0$VER: sdl2_image.library 52.1 (10.03.2020) © Ilkka Lehtoranta, Bruno Peloille"
