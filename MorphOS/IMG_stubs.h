@@ -81,3 +81,5 @@
 	STUB(IMG_LoadAnimation_RW)
 	STUB(IMG_LoadAnimationTyped_RW)
 	STUB(IMG_FreeAnimation)
+	STUB(IMG_LoadGIFAnimation_RW)
+		
