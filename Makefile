@@ -5,8 +5,7 @@ CC      = ppc-morphos-gcc-4 -noixemul
 # -DLOAD_WEBP -DLOAD_GIF
 INCLUDE = -I../SDL-mos-sdl2/include
 CFLAGS  = -mcpu=750 -mtune=7450 -O2 $(INCLUDE) -mresident32 -Wall -Wno-pointer-sign -fno-strict-aliasing $(CDEFS)
-AR	= ar
-RANLIB	= ranlib
+AR	= ppc-morphos-ar
 
 ECHE = echo -e
 BOLD = \033[1m
@@ -80,20 +79,19 @@ MorphOS/IMG_library.o: MorphOS/IMG_library.c MorphOS/IMG_library.h MorphOS/IMG_s
 
 $(TARGET): $(OBJECTS)
 	$(ARCHIVING)
-	@$(AR) crv $@ $^
-	$(RANLIB) $@
+	@$(AR) crvs $@ $^
 
 $(LIBRARY): $(TARGET) $(COREOBJECTS)
 	$(LINKING)
-	$(CC) -nostartfiles -mresident32 -Wl,-Map=sdl2_image.map $(COREOBJECTS) -o $@.db -L. -lSDL2_image -L../SDL-mos-sdl2/src/core/morphos/devenv/lib -lSDL -lm
+	$(CC) -nostartfiles -mresident32 -Wl,-Map=sdl2_image.map $(COREOBJECTS) -o $@.db -L. -lSDL2_image -L../SDL-mos-sdl2/src/core/morphos/devenv/lib -lSDL2 -lm
 	$(STRIPPING)
 	@ppc-morphos-strip -o $@ --remove-section=.comment $@.db
 
 showimage: sdklibs showimage.c
-	$(CC) -noixemul -O2 -Wall showimage.c -o $@ -I../SDL-mos-sdl2/include -DUSE_INLINE_STDARG -LMorphOS/devenv/lib -L../SDL-mos-sdl2/src/core/morphos/devenv/lib -lSDL2_image -lSDL
+	$(CC) -noixemul -O2 -Wall showimage.c -o $@ -I../SDL-mos-sdl2/include -DUSE_INLINE_STDARG -LMorphOS/devenv/lib -L../SDL-mos-sdl2/src/core/morphos/devenv/lib -lSDL2_image -lSDL2
 
 clean:
 	rm -f $(LIBRARY) $(TARGET) $(OBJECTS) $(COREOBJECTS) *.db *.s
 
 dump:
-	objdump --disassemble-all --reloc $(LIBRARY).db >$(LIBRARY).s
+	ppc-morphos-objdump --disassemble-all --reloc $(LIBRARY).db >$(LIBRARY).s
