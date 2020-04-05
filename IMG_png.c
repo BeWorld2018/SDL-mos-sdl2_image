@@ -1,6 +1,6 @@
 /*
   SDL_image:  An example image loading library for use with SDL
-  Copyright (C) 1997-2019 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2020 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -30,40 +30,9 @@
 
 #ifdef LOAD_PNG
 
-//#define USE_LIBPNG
+#define USE_LIBPNG
 
-/*=============================================================================
-        File: SDL_png.c
-     Purpose: A PNG loader and saver for the SDL library
-    Revision:
-  Created by: Philippe Lavoie          (2 November 1998)
-              lavoie@zeus.genie.uottawa.ca
- Modified by:
-
- Copyright notice:
-          Copyright (C) 1998 Philippe Lavoie
-
-          This library is free software; you can redistribute it and/or
-          modify it under the terms of the GNU Library General Public
-          License as published by the Free Software Foundation; either
-          version 2 of the License, or (at your option) any later version.
-
-          This library is distributed in the hope that it will be useful,
-          but WITHOUT ANY WARRANTY; without even the implied warranty of
-          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-          Library General Public License for more details.
-
-          You should have received a copy of the GNU Library General Public
-          License along with this library; if not, write to the Free
-          Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-    Comments: The load and save routine are basically the ones you can find
-             in the example.c file from the libpng distribution.
-
-  Changes:
-    5/17/99 - Modified to use the new SDL data sources - Sam Lantinga
-
-=============================================================================*/
+/* This code was originally written by Philippe Lavoie (2 November 1998) */
 
 #include "SDL_endian.h"
 
@@ -73,8 +42,8 @@
 #include <png.h>
 
 /* Check for the older version of libpng */
-#if (PNG_LIBPNG_VER_MAJOR == 1) 
-#if (PNG_LIBPNG_VER_MINOR < 4)
+#if (PNG_LIBPNG_VER_MAJOR == 1)
+#if (PNG_LIBPNG_VER_MINOR < 5)
 #define LIBPNG_VERSION_12
 typedef png_bytep png_const_bytep;
 typedef png_color *png_const_colorp;
@@ -300,6 +269,9 @@ SDL_Surface *IMG_LoadPNG_RW(SDL_RWops *src)
      */
 
 #ifdef PNG_SETJMP_SUPPORTED
+#ifdef _MSC_VER
+#pragma warning(disable:4611)   /* warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable */
+#endif
 #ifndef LIBPNG_VERSION_12
     if ( setjmp(*lib.png_set_longjmp_fn(png_ptr, longjmp, sizeof (jmp_buf))) )
 #else
@@ -474,6 +446,9 @@ done:   /* Clean up and return */
 }
 
 #else
+#if _MSC_VER >= 1300
+#pragma warning(disable : 4100) /* warning C4100: 'op' : unreferenced formal parameter */
+#endif
 
 int IMG_InitPNG()
 {
@@ -529,6 +504,7 @@ static void png_write_data(png_structp png_ptr, png_bytep src, png_size_t size)
 
 static void png_flush_data(png_structp png_ptr)
 {
+    (void)png_ptr;
 }
 
 static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freedst)
@@ -543,14 +519,14 @@ static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freed
 
         png_ptr = lib.png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
         if (png_ptr == NULL) {
-            SDL_SetError("Couldn't allocate memory for PNG file or incompatible PNG dll");
+            IMG_SetError("Couldn't allocate memory for PNG file or incompatible PNG dll");
             return -1;
         }
 
         info_ptr = lib.png_create_info_struct(png_ptr);
         if (info_ptr == NULL) {
             lib.png_destroy_write_struct(&png_ptr, NULL);
-            SDL_SetError("Couldn't create image information for PNG file");
+            IMG_SetError("Couldn't create image information for PNG file");
             return -1;
         }
 #ifdef PNG_SETJMP_SUPPORTED
@@ -562,7 +538,7 @@ static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freed
 #endif
         {
             lib.png_destroy_write_struct(&png_ptr, &info_ptr);
-            SDL_SetError("Error writing the PNG file.");
+            IMG_SetError("Error writing the PNG file.");
             return -1;
         }
 
@@ -571,11 +547,11 @@ static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freed
             const int ncolors = palette->ncolors;
             int i;
 
-            color_ptr = SDL_malloc(sizeof(png_colorp) * ncolors);
+            color_ptr = (png_colorp)SDL_malloc(sizeof(png_colorp) * ncolors);
             if (color_ptr == NULL)
             {
                 lib.png_destroy_write_struct(&png_ptr, &info_ptr);
-                SDL_SetError("Couldn't create palette for PNG file");
+                IMG_SetError("Couldn't create palette for PNG file");
                 return -1;
             }
             for (i = 0; i < ncolors; i++) {
@@ -603,7 +579,7 @@ static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freed
             row_pointers = (png_bytep *) SDL_malloc(sizeof(png_bytep) * source->h);
             if (!row_pointers) {
                 lib.png_destroy_write_struct(&png_ptr, &info_ptr);
-                SDL_SetError("Out of memory");
+                IMG_SetError("Out of memory");
                 return -1;
             }
             for (row = 0; row < (int)source->h; row++) {
@@ -626,7 +602,7 @@ static int IMG_SavePNG_RW_libpng(SDL_Surface *surface, SDL_RWops *dst, int freed
             SDL_RWclose(dst);
         }
     } else {
-        SDL_SetError("Passed NULL dst");
+        IMG_SetError("Passed NULL dst");
         return -1;
     }
     return 0;
@@ -670,13 +646,13 @@ static int IMG_SavePNG_RW_miniz(SDL_Surface *surface, SDL_RWops *dst, int freeds
             }
             SDL_free(png);
         } else {
-            SDL_SetError("Failed to convert and save image");
+            IMG_SetError("Failed to convert and save image");
         }
         if (freedst) {
             SDL_RWclose(dst);
         }
     } else {
-        SDL_SetError("Passed NULL dst");
+        IMG_SetError("Passed NULL dst");
     }
     return result;
 }

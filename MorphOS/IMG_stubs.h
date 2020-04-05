@@ -72,3 +72,12 @@
 
 	STUB(IMG_Init)
 	STUB(IMG_Quit)
+	
+	STUB(IMG_isSVG)
+	STUB(IMG_LoadSVG_RW)
+	STUB(IMG_SaveJPG)
+	STUB(IMG_SaveJPG_RW)
+	STUB(IMG_LoadAnimation)
+	STUB(IMG_LoadAnimation_RW)
+	STUB(IMG_LoadAnimationTyped_RW)
+	STUB(IMG_FreeAnimation)

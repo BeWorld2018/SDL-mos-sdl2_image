@@ -354,4 +354,47 @@
 		(((int (*)(SDL_Surface *, SDL_RWops *, int , int ))*(void**)(__base - 268))(__t__p0, __t__p1, __t__p2, __t__p3));\
 	})
 
+#define IMG_LoadAnimation(__p0) \
+	({ \
+		const char * __t__p0 = __p0;\
+		long __base = (long)(SDL2_IMAGE_BASE_NAME);\
+		__asm volatile("mr 12,%0": :"r"(__base):"r12");\
+		(((IMG_Animation *(*)(const char *))*(void**)(__base - 274))(__t__p0));\
+	})
+
+#define IMG_LoadAnimation_RW(__p0, __p1) \
+	({ \
+		SDL_RWops * __t__p0 = __p0;\
+		int  __t__p1 = __p1;\
+		long __base = (long)(SDL2_IMAGE_BASE_NAME);\
+		__asm volatile("mr 12,%0": :"r"(__base):"r12");\
+		(((IMG_Animation *(*)(SDL_RWops *, int ))*(void**)(__base - 280))(__t__p0, __t__p1));\
+	})
+
+#define IMG_LoadAnimationTyped_RW(__p0, __p1, __p2) \
+	({ \
+		SDL_RWops * __t__p0 = __p0;\
+		int  __t__p1 = __p1;\
+		const char * __t__p2 = __p2;\
+		long __base = (long)(SDL2_IMAGE_BASE_NAME);\
+		__asm volatile("mr 12,%0": :"r"(__base):"r12");\
+		(((IMG_Animation *(*)(SDL_RWops *, int , const char *))*(void**)(__base - 286))(__t__p0, __t__p1, __t__p2));\
+	})
+
+#define IMG_FreeAnimation(__p0) \
+	({ \
+		IMG_Animation * __t__p0 = __p0;\
+		long __base = (long)(SDL2_IMAGE_BASE_NAME);\
+		__asm volatile("mr 12,%0": :"r"(__base):"r12");\
+		(((void (*)(IMG_Animation *))*(void**)(__base - 292))(__t__p0));\
+	})
+
+#define IMG_LoadGIFAnimation_RW(__p0) \
+	({ \
+		SDL_RWops * __t__p0 = __p0;\
+		long __base = (long)(SDL2_IMAGE_BASE_NAME);\
+		__asm volatile("mr 12,%0": :"r"(__base):"r12");\
+		(((IMG_Animation *(*)(SDL_RWops *))*(void**)(__base - 298))(__t__p0));\
+	})
+
 #endif /* !_PPCINLINE_SDL2_IMAGE_H */

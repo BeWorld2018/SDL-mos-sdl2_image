@@ -1,6 +1,6 @@
 /*
   SDL_image:  An example image loading library for use with SDL
-  Copyright (C) 1997-2019 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2020 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -67,6 +67,7 @@
 #endif
 #undef HAVE_STDIO_H
 
+#define NSVG_EXPORT static
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
 #define NANOSVGRAST_IMPLEMENTATION
@@ -102,22 +103,21 @@ SDL_Surface *IMG_LoadSVG_RW(SDL_RWops *src)
     SDL_Surface *surface = NULL;
     float scale = 1.0f;
 
-	#ifdef __MORPHOS__
+/*	#ifdef __MORPHOS__
 	Sint64 start;
 	if ( !src ) {
-        /* The error message has been set in SDL_RWFromFile */
         return NULL;
     }
 	start = SDL_RWtell(src);
 	
-	#else
+	#else*/
 	
 	
     data = (char *)SDL_LoadFile_RW(src, NULL, SDL_FALSE);
     if ( !data ) {
         return NULL;
     }
-   #endif 
+   //#endif 
     /* For now just use default units of pixels at 96 DPI */
     image = nsvgParse(data, "px", 96.0f);
     SDL_free(data);
@@ -155,6 +155,9 @@ SDL_Surface *IMG_LoadSVG_RW(SDL_RWops *src)
 }
 
 #else
+#if _MSC_VER >= 1300
+#pragma warning(disable : 4100) /* warning C4100: 'op' : unreferenced formal parameter */
+#endif
 
 /* See if an image is contained in a data source */
 int IMG_isSVG(SDL_RWops *src)

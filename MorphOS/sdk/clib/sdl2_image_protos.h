@@ -75,6 +75,14 @@ int IMG_isSVG(SDL_RWops *src);
 SDL_Surface * IMG_LoadSVG_RW(SDL_RWops *src);
 int IMG_SaveJPG(SDL_Surface *surface, const char *file, int quality);
 int IMG_SaveJPG_RW(SDL_Surface *surface, SDL_RWops *dst, int freedst, int quality);
+/* 2.0.6 */
+IMG_Animation * IMG_LoadAnimation(const char *file);
+IMG_Animation * IMG_LoadAnimation_RW(SDL_RWops *src, int freesrc);
+IMG_Animation * IMG_LoadAnimationTyped_RW(SDL_RWops *src, int freesrc, const char *type);
+void IMG_FreeAnimation(IMG_Animation *anim);
+ 
+/* Individual loading functions */
+IMG_Animation * IMG_LoadGIFAnimation_RW(SDL_RWops *src);
 
 #ifdef __cplusplus
 }

@@ -1,8 +1,9 @@
-# Makefile to build the SDL_image 2
+# Makefile to build the SDL2_image library
 
-CDEFS   = -DAROS_ALMOST_COMPATIBLE -DUSE_INLINE_STDARG -D__MORPHOS_SHAREDLIBS -D_NO_PPCINLINE   -DLOAD_BMP  -DLOAD_LBM -DLOAD_PCX -DLOAD_PNM -DLOAD_TGA -DLOAD_XCF -DLOAD_XPM -DLOAD_JPG -DLOAD_PNG -DLOAD_TIF  -DLOAD_XV -DLOAD_SVG
+CDEFS   = -DAROS_ALMOST_COMPATIBLE -DUSE_INLINE_STDARG -D__MORPHOS_SHAREDLIBS -D_NO_PPCINLINE -DLOAD_GIF -DLOAD_BMP -DLOAD_LBM -DLOAD_PCX -DLOAD_PNM -DLOAD_TGA -DLOAD_XCF -DLOAD_XPM -DLOAD_JPG -DLOAD_PNG -DLOAD_TIF  -DLOAD_XV -DLOAD_SVG
+# -DLOAD_WEBP 
 CC      = ppc-morphos-gcc-4 -noixemul
-# -DLOAD_WEBP -DLOAD_GIF
+
 INCLUDE = -I../SDL-mos-sdl2/include
 CFLAGS  = -mcpu=750 -mtune=7450 -O2 $(INCLUDE) -mresident32 -Wall -Wno-pointer-sign -fno-strict-aliasing $(CDEFS)
 AR	= ppc-morphos-ar
@@ -54,8 +55,8 @@ sdk: sdklibs
 	mkdir -p /usr/local/lib
 	mkdir -p /usr/local/lib/libb32
 	cp SDL_image.h /usr/local/include/SDL2/SDL2_image.h
-	cp MorphOS/devenv/lib/libSDL_image.a  /usr/local/lib/SDL2_image.a
-	cp MorphOS/devenv/lib/libb32/libSDL_image.a  /usr/local/lib/libb32/SDL2_image.a
+	cp MorphOS/devenv/lib/libSDL2_image.a  /usr/local/lib/SDL2_image.a
+	cp MorphOS/devenv/lib/libb32/libSDL2_image.a  /usr/local/lib/libb32/SDL2_image.a
 
 headers:
 	$(HEADERING)
