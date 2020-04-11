@@ -55,8 +55,8 @@ sdk: sdklibs
 	mkdir -p /usr/local/lib
 	mkdir -p /usr/local/lib/libb32
 	cp SDL_image.h /usr/local/include/SDL2/SDL2_image.h
-	cp MorphOS/devenv/lib/libSDL2_image.a  /usr/local/lib/SDL2_image.a
-	cp MorphOS/devenv/lib/libb32/libSDL2_image.a  /usr/local/lib/libb32/SDL2_image.a
+	cp MorphOS/devenv/lib/libSDL2_image.a  /usr/local/lib/libSDL2_image.a
+	cp MorphOS/devenv/lib/libb32/libSDL2_image.a  /usr/local/lib/libb32/libSDL2_image.a
 
 headers:
 	$(HEADERING)
