@@ -2,11 +2,13 @@
 
 CDEFS   = -DAROS_ALMOST_COMPATIBLE -DUSE_INLINE_STDARG -D__MORPHOS_SHAREDLIBS -D_NO_PPCINLINE -DLOAD_GIF -DLOAD_BMP -DLOAD_LBM -DLOAD_PCX -DLOAD_PNM -DLOAD_TGA -DLOAD_XCF -DLOAD_XPM -DLOAD_JPG -DLOAD_PNG -DLOAD_TIF  -DLOAD_XV -DLOAD_SVG
 # -DLOAD_WEBP 
-CC      = ppc-morphos-gcc-4 -noixemul
+CC      = ppc-morphos-gcc-9 -noixemul
 
 INCLUDE = -I../SDL-mos-sdl2/include
 CFLAGS  = -mcpu=750 -mtune=7450 -O2 $(INCLUDE) -mresident32 -Wall -Wno-pointer-sign -fno-strict-aliasing $(CDEFS)
 AR	= ppc-morphos-ar
+
+AMIGADATE = $(shell date +"%-d.%-m.%Y")
 
 ECHE = echo -e
 BOLD = \033[1m
@@ -76,7 +78,7 @@ install-iso:
 
 MorphOS/IMG_library.o: MorphOS/IMG_library.c MorphOS/IMG_library.h MorphOS/IMG_stubs.h
 	$(COMPILING)
-	$(CC) -mcpu=750 -O2 $(INCLUDE) -Wall -fno-strict-aliasing -DAROS_ALMOST_COMPATIBLE -o $@ -c $*.c
+	$(CC) -mcpu=750 $(INCLUDE)  -Wall -fno-strict-aliasing -D__AMIGADATE__=\"$(AMIGADATE)\" -DAROS_ALMOST_COMPATIBLE -o $@ -c $*.c
 
 $(TARGET): $(OBJECTS)
 	$(ARCHIVING)
@@ -84,7 +86,7 @@ $(TARGET): $(OBJECTS)
 
 $(LIBRARY): $(TARGET) $(COREOBJECTS)
 	$(LINKING)
-	$(CC) -nostartfiles -mresident32 -Wl,-Map=sdl2_image.map $(COREOBJECTS) -o $@.db -L. -lSDL2_image -L../SDL-mos-sdl2/src/core/morphos/devenv/lib -lSDL2 -lm
+	$(CC) -nostartfiles -O0 -mresident32 -Wl,-Map=sdl2_image.map $(COREOBJECTS) -o $@.db -L. -lSDL2_image -L../SDL-mos-sdl2/src/core/morphos/devenv/lib -lSDL2 -lm
 	$(STRIPPING)
 	@ppc-morphos-strip -o $@ --remove-section=.comment $@.db
 

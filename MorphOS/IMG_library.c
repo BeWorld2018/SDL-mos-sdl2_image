@@ -21,6 +21,7 @@ struct Library    *SDL2Base = NULL;
 struct Library    *JFIFBase = NULL;
 struct Library    *PNGBase  = NULL;
 struct Library    *TIFFBase = NULL;
+struct Library    *SDL2ImageBase = NULL;
 
 /**********************************************************************
 	LIB_Reserved
@@ -157,12 +158,12 @@ static BPTR DeleteLib(struct SDL2ImageLibrary *LibBase, struct ExecBase *SysBase
 
 static void UserLibClose(struct SDL2ImageLibrary *LibBase, struct ExecBase *SysBase)
 {
-	CloseLibrary(SDL2Base);
+	//CloseLibrary(SDL2Base);
 	CloseLibrary(JFIFBase);
 	CloseLibrary(PNGBase);
 	CloseLibrary(TIFFBase);
 
-	SDL2Base = NULL;
+	//SDL2Base = NULL;
 	JFIFBase = NULL;
 	PNGBase = NULL;
 	TIFFBase = NULL;
@@ -258,8 +259,8 @@ struct Library *LIB_Open(void)
 
 	if (LibBase->Alloc == 0)
 	{
-		if (((SDL2Base = OpenLibrary("sdl2.library",  0)) != NULL)
-		 && ((JFIFBase = OpenLibrary("jfif.library",  0)) != NULL)
+		if (/*((SDL2Base = OpenLibrary("sdl2.library",  0)) != NULL)
+		 && */((JFIFBase = OpenLibrary("jfif.library",  0)) != NULL)
 		 && ((PNGBase  = OpenLibrary("png.library" , 51)) != NULL)
 		 && ((TIFFBase = OpenLibrary("tiff.library",  0)) != NULL))
 		{
