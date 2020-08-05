@@ -18,7 +18,7 @@ extern void __SDL2_OpenLibError(ULONG version, const char *name);
 #if defined(__NO_SDL_CONSTRUCTORS)
 extern struct Library *SDL2ImageBase;
 #else
-void _INIT_4_SDL2ImageBase(void) __attribute__((alias("__CSTP_init_SDL2ImageBase")));
+int _INIT_4_SDL2ImageBase(void) __attribute__((alias("__CSTP_init_SDL2ImageBase")));
 void _EXIT_4_SDL2ImageBase(void) __attribute__((alias("__DSTP_cleanup_SDL2ImageBase")));
 
 struct Library *SDL2ImageBase;
