@@ -1,7 +1,7 @@
 # Makefile to build the SDL2_image library
 
 CC      = ppc-morphos-gcc-9 -noixemul
-INCLUDE = -I../../../../include -I../sdk
+INCLUDE = -I../sdk
 CFLAGS  =  -mcpu=750 -mtune=7450 -O2 $(INCLUDE) -Wall -Wno-pointer-sign -fno-strict-aliasing
 AR	= ppc-morphos-ar
 TARGET = libSDL2_image.a
@@ -51,7 +51,7 @@ lib/libb32/libSDL2_image-nc.a: sdl-startup-brel-nc.o ../sdk/fd/sdl2_image_lib.fd
 	@$(AR) crus $@ sdl-startup-brel-nc.o
 
 clean:
-	@-rm -rf lib *.s
+	@-rm -rf lib *.o *.s
 
 dump:
 	ppc-morphos-objdump --disassemble-all --reloc lib/$(TARGET).a >lib/libSDL2_image.s
